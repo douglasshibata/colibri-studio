@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colibri Studio — Local AI Workstation</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Marked and Highlight.js for Markdown Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+</head>
+<body class="dark-theme">
+  <div class="app-layout">
+    <!-- Sidebar / Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo">🐦</span>
+        <div class="brand-text">
+          <span class="brand-title">COLIBRI STUDIO</span>
+          <span class="brand-subtitle">LOCAL AI WORKSTATION</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="chat">
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+          Chat
+        </button>
+        <button class="nav-item" data-tab="models">
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          Models
+        </button>
+        <button class="nav-item" data-tab="hardware">
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M22 9V7h-2V5c0-1.1-.9-2-2-2h-2V1h-2v2h-4V1H8v2H6c-1.1 0-2 .9-2 2v2H2v2h2v4H2v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h4v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2V9h2zm-4 10H6V5h12v14z"/></svg>
+          Hardware
+        </button>
+        <button class="nav-item" data-tab="brain">
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.57 10.56 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+          Brain
+        </button>
+        <button class="nav-item" data-tab="planner">
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+          Planner
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+          Settings
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-indicator">
+          <span class="status-dot online" id="server-status-dot"></span>
+          <span class="status-text" id="server-status-text">LOCAL INFERENCE</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+      <!-- 1. CHAT TAB -->
+      <section id="tab-chat" class="tab-pane active">
+        <div class="chat-container">
+          <!-- Chat Sidebar: Conversation List -->
+          <div class="conv-sidebar">
+            <button class="btn btn-primary btn-block" id="new-conv-btn">+ New Conversation</button>
+            <div class="conv-list" id="conv-list"></div>
+          </div>
+
+          <!-- Chat Area -->
+          <div class="chat-main">
+            <!-- Header bar -->
+            <div class="chat-header">
+              <div class="chat-title-area">
+                <span class="chat-title" id="chat-title" title="Click to rename">New Conversation</span>
+                <span class="model-badge" id="active-model-badge">GLM-5.2 (744B MoE)</span>
+              </div>
+              <div class="chat-actions">
+                <button class="btn btn-secondary btn-sm" id="sys-prompt-btn">System Prompt</button>
+                <button class="btn btn-secondary btn-sm" id="rename-conv-btn">Rename</button>
+                <button class="btn btn-danger btn-sm" id="delete-conv-btn">Delete</button>
+              </div>
+            </div>
+
+            <!-- System Prompt Bar (hidden by default) -->
+            <div class="system-prompt-bar" id="system-prompt-bar" style="display:none;">
+              <label>System Prompt:</label>
+              <input type="text" id="system-prompt-input" placeholder="e.g. You are a helpful expert assistant for systems engineering...">
+              <button class="btn btn-primary btn-sm" id="save-sys-prompt-btn">Save</button>
+            </div>
+
+            <!-- Messages Stream -->
+            <div class="chat-messages" id="chat-messages">
+              <div class="welcome-box">
+                <h2>Welcome to Colibri Studio</h2>
+                <p>Run 744B+ parameter MoE frontier models locally. VRAM, RAM, and NVMe are treated as a unified memory hierarchy.</p>
+                <div class="features-grid">
+                  <div class="feat-card">⚡ Streaming Experts</div>
+                  <div class="feat-card">🔒 100% Local Execution</div>
+                  <div class="feat-card">🧠 Interactive MoE Cortex</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Telemetry Bar -->
+            <div class="telemetry-bar" id="telemetry-bar">
+              <span class="tele-item">Speed: <strong id="tele-speed">0.0 tok/s</strong></span>
+              <span class="tele-item">TTFT: <strong id="tele-ttft">0.0 s</strong></span>
+              <span class="tele-item">Latency: <strong id="tele-latency">0 ms</strong></span>
+              <span class="tele-item">Context: <strong id="tele-context">0 tokens</strong></span>
+            </div>
+
+            <!-- Input Controls -->
+            <div class="chat-input-area">
+              <textarea id="chat-input" placeholder="Type your prompt here... (Shift+Enter for newline)" rows="3"></textarea>
+              <div class="input-actions">
+                <div class="hyper-controls">
+                  <label>Temp: <input type="number" id="temp-input" min="0" max="2" step="0.1" value="0.7"></label>
+                  <label>Top-P: <input type="number" id="topp-input" min="0" max="1" step="0.05" value="0.9"></label>
+                  <label>Max Tokens: <input type="number" id="maxtok-input" min="64" max="4096" step="64" value="1024"></label>
+                </div>
+                <div class="btn-group">
+                  <button class="btn btn-danger" id="stop-btn" style="display:none;">Stop Generation</button>
+                  <button class="btn btn-secondary" id="regenerate-btn">Regenerate</button>
+                  <button class="btn btn-primary" id="send-btn">Send Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. MODELS TAB -->
+      <section id="tab-models" class="tab-pane">
+        <div class="pane-header">
+          <h2>Model Manager</h2>
+          <p>Scan local directories for converted Colibrì MoE models and view tier requirements.</p>
+        </div>
+        <div class="models-grid" id="models-grid"></div>
+      </section>
+
+      <!-- 3. HARDWARE TAB -->
+      <section id="tab-hardware" class="tab-pane">
+        <div class="pane-header">
+          <h2>Hardware Workstation Dashboard</h2>
+          <p>Real-time telemetry for CPU, RAM, VRAM, NVMe disk throughput, and expert tier residency.</p>
+        </div>
+        <div class="dashboard-grid">
+          <div class="dash-card">
+            <h3>CPU Utilization</h3>
+            <div class="metric-val" id="cpu-val">0%</div>
+            <div class="bar-bg"><div class="bar-fill" id="cpu-bar" style="width: 0%;"></div></div>
+          </div>
+          <div class="dash-card">
+            <h3>RAM Usage</h3>
+            <div class="metric-val" id="ram-val">0 / 0 GB</div>
+            <div class="bar-bg"><div class="bar-fill" id="ram-bar" style="width: 0%;"></div></div>
+          </div>
+          <div class="dash-card">
+            <h3>VRAM Utilization</h3>
+            <div class="metric-val" id="vram-val">0 / 0 GB</div>
+            <div class="bar-bg"><div class="bar-fill cyan" id="vram-bar" style="width: 0%;"></div></div>
+          </div>
+          <div class="dash-card">
+            <h3>NVMe Disk Read/Write</h3>
+            <div class="metric-val" id="disk-val">R: 0 MB/s | W: 0 MB/s</div>
+            <div class="subtext" id="disk-sub">Storage Free: 0 GB</div>
+          </div>
+        </div>
+
+        <div class="residency-panel">
+          <h3>MoE Model Residency Tiers</h3>
+          <div class="tier-bar">
+            <div class="tier-seg vram" id="tier-vram-bar" style="width: 20%;">VRAM (20%)</div>
+            <div class="tier-seg ram" id="tier-ram-bar" style="width: 30%;">RAM (30%)</div>
+            <div class="tier-seg nvme" id="tier-nvme-bar" style="width: 50%;">NVMe (50%)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. BRAIN TAB -->
+      <section id="tab-brain" class="tab-pane">
+        <div class="pane-header">
+          <h2>Colibrì Brain Cortex</h2>
+          <p>Interactive MoE Expert routing telemetry & tier distribution (19,456 routed experts).</p>
+        </div>
+        <div class="brain-container">
+          <canvas id="brain-canvas" width="900" height="500"></canvas>
+          <div class="brain-legend">
+            <span class="leg-item"><span class="leg-dot vram"></span> VRAM Pinned Hot-Store</span>
+            <span class="leg-item"><span class="leg-dot ram"></span> RAM LRU Cache</span>
+            <span class="leg-item"><span class="leg-dot nvme"></span> NVMe Storage Streamed</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. PLANNER TAB -->
+      <section id="tab-planner" class="tab-pane">
+        <div class="pane-header">
+          <h2>Machine Resource Planner</h2>
+          <p>Estimate model suitability and performance on your specific hardware configuration.</p>
+        </div>
+        <div class="planner-box">
+          <div class="planner-form">
+            <div class="form-group">
+              <label>Model Family</label>
+              <select id="plan-model">
+                <option value="glm">GLM-5.2 / 5.3 (744B MoE)</option>
+                <option value="glm53">GLM-5.3-Flash (321B MoE)</option>
+                <option value="inkling">Inkling (975B MoE)</option>
+                <option value="kimi_k3">Kimi K3 (2.8T MoE)</option>
+                <option value="deepseek_v4">DeepSeek V4 Flash (284B MoE)</option>
+                <option value="qwen36">Qwen3.6-35B-A3B (35B MoE)</option>
+                <option value="olmoe">OLMoE (7B MoE)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>System RAM (GB)</label>
+              <input type="number" id="plan-ram" value="32">
+            </div>
+            <div class="form-group">
+              <label>GPU VRAM (GB)</label>
+              <input type="number" id="plan-vram" value="0">
+            </div>
+            <div class="form-group">
+              <label>Free Disk Space (GB)</label>
+              <input type="number" id="plan-disk" value="500">
+            </div>
+            <div class="form-group">
+              <label>Storage Type</label>
+              <select id="plan-storage">
+                <option value="NVMe">PCIe Gen4/Gen5 NVMe</option>
+                <option value="SATA SSD">SATA SSD</option>
+                <option value="HDD">Mechanical HDD</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="run-planner-btn">Evaluate Feasibility</button>
+          </div>
+
+          <div class="planner-result" id="planner-result">
+            <div class="rating-badge rating-comfortable" id="plan-rating">Comfortable</div>
+            <p id="plan-reasoning">Evaluation result will appear here.</p>
+            <ul class="bottlenecks-list" id="plan-bottlenecks"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. SETTINGS TAB -->
+      <section id="tab-settings" class="tab-pane">
+        <div class="pane-header">
+          <h2>Workstation Settings</h2>
+          <p>Configure paths, API server bindings, and GPU/memory preferences.</p>
+        </div>
+        <div class="settings-form">
+          <div class="form-group">
+            <label>Colibrì Executable Path (`coli`)</label>
+            <input type="text" id="cfg-exec" value="coli">
+          </div>
+          <div class="form-group">
+            <label>Model Base Directory</label>
+            <input type="text" id="cfg-model-dir" value="./models">
+          </div>
+          <div class="form-group">
+            <label>API Host Binding</label>
+            <input type="text" id="cfg-host" value="127.0.0.1">
+          </div>
+          <div class="form-group">
+            <label>API Port</label>
+            <input type="number" id="cfg-port" value="8000">
+          </div>
+          <button class="btn btn-primary" id="save-settings-btn">Save Configuration</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
